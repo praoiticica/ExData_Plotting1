@@ -1,27 +1,16 @@
-## Reading data
-DF <- read.csv("./data/household_power_consumption.txt", header=T, sep=';', na.strings="?", 
-               nrows=2075259, check.names=F, stringsAsFactors=F, comment.char="", quote='\"')
-DF$Date <- as.Date(DF$Date, format="%d/%m/%Y")
-
-## Subseting data
-data <- subset(DF, subset=(Date >= "2007-02-01" & Date <= "2007-02-02"))
-rm(DF)
-
-## Converting dates
-datetime <- paste(as.Date(data$Date), data$Time)
-data$Datetime <- as.POSIXct(datetime)
-
 ## Plot 4
 par(mfrow=c(2,2), mar=c(4,4,2,1), oma=c(0,0,2,0))
-with(data, {
-  plot(Global_active_power~Datetime, type="l",xlab="")
-  plot(Voltage~Datetime, type="l")
-  plot(Sub_metering_1~Datetime, type="l",xlab="")
-  lines(Sub_metering_2~Datetime,col='Red')
-  lines(Sub_metering_3~Datetime,col='Blue')
-  legend("topright", col=c("black", "red", "blue"), lty=1, lwd=2, bty="n",
-         legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
-  plot(Global_reactive_power~Datetime, type="l")
+with(subDF, {
+  plot(Global_active_power~DateTime, type="l",xlab="")
+  plot(Voltage~DateTime, type="l")
+  plot(Sub_metering_1~DateTime, type="l",xlab="")
+  lines(Sub_metering_2~DateTime,col='Red')
+  lines(Sub_metering_3~DateTime,col='Blue')
+  legend("topright", col=c("black", "red", "blue"), 
+         legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"),
+         lty=1, lwd=2, bty="n"
+         )
+  plot(Global_reactive_power~DateTime, type="l")
 })
 
 ## Saving to file
